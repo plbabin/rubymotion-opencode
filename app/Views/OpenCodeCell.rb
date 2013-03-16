@@ -11,18 +11,6 @@ class OpenCodeCell < UITableViewCell
   def initWithOpenCodeStyle(identifier)
     self.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
 
-    # header view
-    headerView = UIView.alloc.initWithFrame([[0,0],[320,24]])
-    headerView.backgroundColor = BubbleWrap.rgba_color(0,0,0,0.2)
-
-    label = UILabel.alloc.initWithFrame([[5,5],[320,14]])
-    label.tag = TITLE_TAG
-    label.backgroundColor = UIColor.clearColor
-    label.font = UIFont.getOpencodeFont(14,true)
-    label.textColor = BubbleWrap.rgba_color(255,255,255,0.75)
-    headerView.addSubview(label)
-    self.contentView.addSubview(headerView)
-
     # img = UIImage.imageNamed("bg_box_resto_small_highlight")
     # img.resizableImageWithCapInsets([20,20,20,20])
     # self.selectedBackgroundView = UIImageView.alloc.initWithImage(img)
@@ -79,8 +67,8 @@ class OpenCodeCell < UITableViewCell
   end
   
   def update(data)
-    headerTitle = self.viewWithTag(TITLE_TAG)
-    headerTitle.text = data["title_fr"]
+    # headerTitle = self.viewWithTag(TITLE_TAG)
+    # headerTitle.text = data["title_fr"]
     # restoTitle = self.viewWithTag(RESTONAME_TAG)
     # restoTitle.text = "L'affaire est ketchup with a fucking double name"
 

@@ -39,9 +39,22 @@ class MainController < UIViewController
       @editions.load
     end
 
-    # def tableView(tableView, numberOfRowsInSection: section)
-    #   if @data then @data.count else 0 end
-    # end
+    # SECTIONS
+    def tableView(tableView, viewForHeaderInSection:section)
+      EditionHeaderView.alloc.initWithFrameAndText(tableView.bounds, @data[section]["title_fr"])
+    end
+
+    def numberOfSectionsInTableView(tableView)
+      if @data then @data.count else 0 end
+    end
+
+    def tableView(tableView, heightForHeaderInSection:section)
+      22
+    end
+
+    def tableView(tableView, numberOfRowsInSection:section)
+      @data[section]["talks"].count
+    end
 
     def tableView(tableView, cellForRowAtIndexPath: indexPath)
       @reuseIdentifier ||= "CELL_IDENTIFIER"
