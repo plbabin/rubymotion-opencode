@@ -25,11 +25,11 @@ class MainController < UIViewController
     def _loadData
       @editions = Editions.new
 
-      observe(@editions, 'list') do |old_value, new_value|
+      observe(@editions, :list) do |old_value, new_value|
         if new_value
           @data = @editions.list
           @tableView.reloadData
-          NSLog("Loaded!!#{@data.count}")
+          NSLog("### DATA LOADED : #{@data.count}")
         else
           @data = []
           App.alert("unable to load data")
@@ -52,6 +52,11 @@ class MainController < UIViewController
       22
     end
 
+    # ROWS
+    def tableView(tableView, heightForRowAtIndexPath:indexPath)
+      64
+    end
+
     def tableView(tableView, numberOfRowsInSection:section)
       @data[section]["talks"].count
     end
@@ -60,17 +65,20 @@ class MainController < UIViewController
       @reuseIdentifier ||= "CELL_IDENTIFIER"
 
       cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
-        OpenCodeCell.alloc.initWithOpenCodeStyle(@reuseIdentifier)
+        OpenCodeCell.alloc.initWithOpenCodeStyle(@reuseIdentifier, inTableView:tableView)
       end
 
-      # update cell with data
-      cell.update(@data[indexPath.row])
+      # fill cell with data
+      cell.row = indexPath.row;
+      cell.section = indexPath.section
+
+      talk = @data[indexPath.section]["talks"][indexPath.row]
+      
+      if talk
+        cell.fillWithTalk(talk)
+      end
 
       cell
-    end
-
-    def tableView(tableView, numberOfRowsInSection: section)
-      if @data then @data.count else 0 end
     end
 
     def tableView(tableView, didSelectRowAtIndexPath:indexPath)
@@ -78,6 +86,10 @@ class MainController < UIViewController
       editionController.edition_id = @data[indexPath.row]["id"]
 
       self.navigationController.pushViewController(editionController, animated:true)
+    end
+
+    def reloadTalk(section,row)
+        @tableView.reloadRowsAtIndexPaths([NSIndexPath.indexPathForRow(row, inSection:section)], withRowAnimation:false)
     end
 
 end

@@ -1,86 +1,75 @@
 class OpenCodeCell < UITableViewCell
-  CELL_HEIGHT       = 50;
-  TITLE_TAG    = 1
-  RESTONAME_TAG     = 2
-  RESTOTYPE_TAG     = 3
-  RESTODISTANCE_TAG = 4
-  RESTOIMG_TAG      = 5
+  attr_accessor :row, :section, :tableView
   
-  # http://www.cocoawithlove.com/2009/04/easy-custom-uitableview-drawing.html
-
-  def initWithOpenCodeStyle(identifier)
+  def initWithOpenCodeStyle(identifier, inTableView:tableView)
     self.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
+    self.tableView = tableView
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    # img = UIImage.imageNamed("bg_box_resto_small_highlight")
-    # img.resizableImageWithCapInsets([20,20,20,20])
-    # self.selectedBackgroundView = UIImageView.alloc.initWithImage(img)
+    @profileImageView = UIImageView.alloc.initWithFrame([[10,5],[36,36]])
 
-    # # resto image
-    # imgView = UIImageView.alloc.initWithFrame([[12,8.5],[32,32]])
-    # imgView.contentMode = UIViewContentModeScaleAspectFit;
-    # imgView.tag = RESTOIMG_TAG
+    @profileImageView.contentMode = UIViewContentModeScaleAspectFill
+    @profileImageView.clipsToBounds = true
 
-    # self.contentView.addSubview(imgView)
+    self.contentView.addSubview(@profileImageView)
 
-    # # Resto title
-    # restoTitle = UILabel.alloc.initWithFrame([[48,8.5],[259,14]])
-    # restoTitle.tag = RESTONAME_TAG
-    # restoTitle.backgroundColor = UIColor.clearColor
-    # restoTitle.font = RSFont.fontForSizeAndBold(14)
-    # restoTitle.textAlignment = UITextAlignmentLeft
-    # restoTitle.textColor = RSColor.mainTextColor
-    # restoTitle.numberOfLines = 1
-    # # restoTitle.minimumFontSize = 10
-    # # restoTitle.adjustsFontSizeToFitWidth = true
+    # Talk author name title
+    @authorNameLabel = UILabel.alloc.initWithFrame([[56,5],[276,14]])
+    @authorNameLabel.font = UIFont.getOpencodeFont(14,true);
+    @authorNameLabel.backgroundColor = UIColor.clearColor
+    @authorNameLabel.textColor = BubbleWrap.rgba_color(255,255,255,0.6)
 
-    # self.contentView.addSubview restoTitle
-    
-    # # Resto type
-    # restoType = UILabel.alloc.initWithFrame([[48,27],[175,13]])
-    # restoType.tag = RESTOTYPE_TAG
-    # restoType.backgroundColor = UIColor.clearColor
-    # restoType.font = RSFont.fontForSize(13)
-    # restoType.textAlignment = UITextAlignmentLeft
-    # restoType.textColor = RSColor.secTextColor
-    # restoType.numberOfLines = 1
+    self.contentView.addSubview(@authorNameLabel)
 
-    # self.contentView.addSubview(restoType)
+    # Talk title
+    @talkTitleLabel = UILabel.alloc.initWithFrame([[56,22],[216,48]])
+    @talkTitleLabel.font = UIFont.getOpencodeFont(13,true);
+    @talkTitleLabel.backgroundColor = UIColor.clearColor
+    @talkTitleLabel.textColor = BubbleWrap.rgba_color(255,255,255,1)
+    @talkTitleLabel.numberOfLines = 0
+    # @talkTitleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    # @talkTitleLabel.sizeToFit
 
-    # # distance icon
-    # img = UIImage.imageNamed("ico_list_location_small")
-    # imgView = UIImageView.alloc.initWithFrame([[258,29.5],[6,10]])
-    # imgView.setImage img
+    self.contentView.addSubview(@talkTitleLabel)
 
-    # self.contentView.addSubview(imgView)
-    
-    # restoDistance = UILabel.alloc.initWithFrame([[268,28], [40,13]])
-    # restoDistance.tag = RESTODISTANCE_TAG
-    # restoDistance.backgroundColor = UIColor.clearColor
-    # restoDistance.font = RSFont.fontForSize(13)
-    # restoDistance.textAlignment = UITextAlignmentLeft
-    # restoDistance.textColor = RSColor.helperTextColor
-    # restoDistance.numberOfLines = 1
-    
-    # self.contentView.addSubview(restoDistance)
-    
     self
   end
   
-  def update(data)
+  def fillWithTalk(talk)
+    
+    unless talk.image
+      @profileImageView.image = UIImage.alloc.init
+      self.loadImage(talk)
+    else
+      @profileImageView.image = talk.image
+    end
+
+    @authorNameLabel.text = talk.author_name
+    @talkTitleLabel.text  = talk.title 
     # headerTitle = self.viewWithTag(TITLE_TAG)
     # headerTitle.text = data["title_fr"]
     # restoTitle = self.viewWithTag(RESTONAME_TAG)
     # restoTitle.text = "L'affaire est ketchup with a fucking double name"
+  end
 
-    # restoType = self.viewWithTag(RESTOTYPE_TAG)
-    # restoType.text = "Restaurant francais"
+  def loadImage(talk)
+    if talk.author_screenname
+      Dispatch::Queue.concurrent.async do
+        url = "http://twitter.com/api/users/profile_image/#{talk.author_screenname}?size=bigger"
+        # NSLog("load : #{url}")
 
-    # img = UIImage.imageNamed("fsq_categories/french_bg_64.png")
-    # restoImg = self.viewWithTag(RESTOIMG_TAG)
-    # restoImg.setImage img
-
-    # restoDistance = self.viewWithTag(RESTODISTANCE_TAG)
-    # restoDistance.text = "4.1 km"
+        profile_image_data = NSData.alloc.initWithContentsOfURL(NSURL.URLWithString(url))
+        if profile_image_data
+          talk.image = UIImage.alloc.initWithData(profile_image_data)
+          Dispatch::Queue.main.sync do
+            @profileImageView.image = talk.image
+            self.tableView.delegate.reloadTalk(self.section, self.row)
+          end
+        end
+      end
+    else
+      @profileImageView.image = talk.image = UIImage.imageNamed("avatar.png")
+    end
   end
 
 end
