@@ -4,6 +4,8 @@ class MainController < UIViewController
     HEADER_HEIGHT = 44
 
     def viewDidLoad
+      SVProgressHUD.show
+
       self.title = ""
 
       self.view.backgroundColor = UIColor.clearColor
@@ -29,6 +31,7 @@ class MainController < UIViewController
         if new_value
           @data = @editions.list
           @tableView.reloadData
+          SVProgressHUD.dismiss
           NSLog("### DATA LOADED : #{@data.count}")
         else
           @data = []

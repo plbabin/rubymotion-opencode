@@ -8,6 +8,7 @@ Bundler.require
 Motion::Project::App.setup do |app|
   app.pods do
     pod 'AFNetworking'
+    pod 'SVProgressHUD'
   end
 
   # Use `rake config' to see complete project settings.
