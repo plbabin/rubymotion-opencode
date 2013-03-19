@@ -6,18 +6,14 @@ class Editions
   end
 
   def load
-    App::Persistence['editions'] = false
-    if !App::Persistence['editions']
-      BW::HTTP.get("http://opencode.ca/api/editions") do |response|
-        if !response.body.nil?
-          @data = BW::JSON.parse(response.body.to_str)
+    BW::HTTP.get("http://opencode.ca/api/editions") do |response|
+      if !response.body.nil?
+        @data = BW::JSON.parse(response.body.to_str)
 
-          # load each editions data
-          loadTalk()
-        end
+        # load each editions data
+        loadTalk()
       end
     end
-
   end
 
   def loadTalk(index = 0)
@@ -46,7 +42,6 @@ class Editions
   end
 
   def save
-    #App::Persistence['editions'] = BW::JSON.generate(self.data)
     self.list = @data.reverse;
   end
 
