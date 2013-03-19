@@ -4,7 +4,7 @@ class Talk
   
 
   def initialize(data = {})
-    @title = data[:title]
+    @title = data[:title].gsub(%r{</?[^>]+?>}, '')
     @author_name = data[:author_name]
     @author_screenname = data[:author_screenname]
     @image = nil
