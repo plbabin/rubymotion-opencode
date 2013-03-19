@@ -2,7 +2,7 @@ class EditionHeaderView < UIView
   def initWithFrameAndText(frame, text)
     self.initWithFrame(frame)
 
-    self.backgroundColor = BubbleWrap.rgba_color(0,0,0,0.2)
+    self.backgroundColor = BubbleWrap.rgba_color(0,0,0,0.5)
 
     label = UILabel.alloc.initWithFrame([[5,5],[320,14]])
     label.backgroundColor = UIColor.clearColor
