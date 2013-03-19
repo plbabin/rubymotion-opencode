@@ -22,13 +22,13 @@ class TalkCell < UITableViewCell
     self.contentView.addSubview(@authorNameLabel)
 
     # Talk title
-    @talkTitleLabel = UILabel.alloc.initWithFrame([[56,22],[216,48]])
+    @talkTitleLabelFrame = [[56,22],[216,48]];
+    @talkTitleLabel = UILabel.alloc.initWithFrame(@talkTitleLabelFrame)
     @talkTitleLabel.font = UIFont.getOpencodeFont(13,true);
     @talkTitleLabel.backgroundColor = UIColor.clearColor
     @talkTitleLabel.textColor = BubbleWrap.rgba_color(255,255,255,1)
     @talkTitleLabel.numberOfLines = 0
     # @talkTitleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    # @talkTitleLabel.sizeToFit
 
     self.contentView.addSubview(@talkTitleLabel)
 
@@ -45,7 +45,9 @@ class TalkCell < UITableViewCell
     end
 
     @authorNameLabel.text = talk.author_name
-    @talkTitleLabel.text  = talk.title 
+    @talkTitleLabel.text  = talk.title
+    @talkTitleLabel.frame = @talkTitleLabelFrame 
+    @talkTitleLabel.sizeToFit
     # headerTitle = self.viewWithTag(TITLE_TAG)
     # headerTitle.text = data["title_fr"]
     # restoTitle = self.viewWithTag(RESTONAME_TAG)
