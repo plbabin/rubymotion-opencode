@@ -68,7 +68,7 @@ class MainController < UIViewController
       @reuseIdentifier ||= "CELL_IDENTIFIER"
 
       cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
-        OpenCodeCell.alloc.initWithOpenCodeStyle(@reuseIdentifier, inTableView:tableView)
+        TalkCell.alloc.initWithTalkStyle(@reuseIdentifier, inTableView:tableView)
       end
 
       # fill cell with data

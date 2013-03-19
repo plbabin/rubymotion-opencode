@@ -1,7 +1,7 @@
-class OpenCodeCell < UITableViewCell
+class TalkCell < UITableViewCell
   attr_accessor :row, :section, :tableView
   
-  def initWithOpenCodeStyle(identifier, inTableView:tableView)
+  def initWithTalkStyle(identifier, inTableView:tableView)
     self.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
     self.tableView = tableView
     self.selectionStyle = UITableViewCellSelectionStyleNone;
