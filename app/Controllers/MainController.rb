@@ -84,13 +84,6 @@ class MainController < UIViewController
       cell
     end
 
-    def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-      editionController = EditionController.alloc.initWithNibName(nil, bundle:nil)
-      editionController.edition_id = @data[indexPath.row]["id"]
-
-      self.navigationController.pushViewController(editionController, animated:true)
-    end
-
     def reloadTalk(section,row)
         @tableView.reloadRowsAtIndexPaths([NSIndexPath.indexPathForRow(row, inSection:section)], withRowAnimation:false)
     end

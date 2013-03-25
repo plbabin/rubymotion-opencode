@@ -15,6 +15,7 @@ Motion::Project::App.setup do |app|
   app.name = 'Opencode'
   
   app.interface_orientations = [:portrait]
+  app.fonts = ['Lato-Bold.ttf', 'Lato-Regular.ttf']
   #app.icons = ["Icon-57.png"];
   app.info_plist['CFBundleIcons'] = { 'CFBundlePrimaryIcon' => { 'UIPrerenderedIcon' => true }}
 end

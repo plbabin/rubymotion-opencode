@@ -10,7 +10,9 @@ class TalkCell < UITableViewCell
 
     @profileImageView.contentMode = UIViewContentModeScaleAspectFill
     @profileImageView.clipsToBounds = true
-
+    @profileImageView.layer.cornerRadius = 3
+    @profileImageView.layer.masksToBounds = true
+    
     self.contentView.addSubview(@profileImageView)
 
     # Talk author name title
