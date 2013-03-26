@@ -9,7 +9,7 @@ class AppDelegate
     @viewController = MainController.alloc.init
     @navigationController = UINavigationController.alloc.initWithRootViewController(@viewController)
     
-    self.applyStylesheet
+    applyStylesheet
 
     @window.rootViewController = @navigationController
 

@@ -60,7 +60,6 @@ class TalkCell < UITableViewCell
     if talk.author_screenname
       Dispatch::Queue.concurrent.async do
         url = "http://twitter.com/api/users/profile_image/#{talk.author_screenname}?size=bigger"
-        # NSLog("load : #{url}")
 
         profile_image_data = NSData.alloc.initWithContentsOfURL(NSURL.URLWithString(url))
         if profile_image_data

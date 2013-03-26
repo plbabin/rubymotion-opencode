@@ -32,7 +32,6 @@ class MainController < UIViewController
           @data = @editions.list
           @tableView.reloadData
           SVProgressHUD.dismiss
-          NSLog("### DATA LOADED : #{@data.count}")
         else
           @data = []
           App.alert("unable to load data")
